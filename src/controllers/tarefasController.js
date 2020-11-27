@@ -1,11 +1,13 @@
 //apontamento do model que criamos para as Tarefas
 const tarefas = require('../models/tarefas');
+const SECRET = process.env.SECRET
 
 const getAll = (req, res) => {
   console.log(req.url);
+  const authHeader = req.get('authorization')
   tarefas.find(function(err, tarefas){
-    if(err) { 
-      res.status(500).send({ message: err.message })
+    if(!autenticado) { 
+      return 'erroooou                                   '
     }
     res.status(200).send(tarefas);
   })
