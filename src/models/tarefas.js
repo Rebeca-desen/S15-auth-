@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 
-//schema são as propriedades que irão compor a estrutura do documento no banco de dados, aqui podemos definir os tipos de valores, nomes dos campos, entre outras configurações.
-
-//New mongoose.Schema é o comando utilizado para que possamos criar um novo Schema do mongo chamado TarefasSchema, através do mongoose.
-
-const TarefasSchema = new mongoose.Schema({
+//estrutura do seu model (atributos da sua entidade)
+const tarefasSchema = new mongoose.Schema({
     id : { type : Number},
     descricao: { type: String },
     dataInclusao: { type: String },
     concluido: { type: Boolean },
     nomeColaboradora: { type: String }
 },{
+    //gera por padrão uma versão para cada atualização do documento
     versionKey: false
 });
 
-const Tarefas = mongoose.model('Tarefas', TarefasSchema);
+// atribuindo o esquema a uma collection
+// estou definindo o nome da collection que irei salvar no banco
+const tarefas = mongoose.model('tarefas', tarefasSchema);
 
-module.exports = Tarefas;
+// exportar o model para ser utilizado
+module.exports = tarefas;

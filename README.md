@@ -61,7 +61,7 @@ UPDATE - utilizamos esse comando para atualizar registros dentro das collections
       //caso apresente algum erro 
         if (err) res.status(500).send({ message: err.message });
         //caso consiga atualizar com sucesso
-        res.status(201).send({ message: "Atualizado com sucesso!" });
+        res.status(200).send({ message: "Atualizado com sucesso!" });
       })
 ```
 
@@ -127,7 +127,7 @@ const mongoose = require('mongoose');
 
 //schema são as propriedades que irão compor a estrutura do documento no banco de dados, aqui podemos definir os tipos de valores, nomes dos campos, entre outras configurações.
 
-//New mongoose.Schema é o comando utilizado para que possamos criar um novo Schema do mongo chamado AlunasSchema, através do mongoose.
+//New mongoose.Schema é o comando utilizado para que possamos criar um novo Schema do mongo chamado tarefasSchema, através do mongoose.
 
 const TarefasSchema = new mongoose.Schema({
     id : { type : Number},
@@ -144,7 +144,7 @@ const Tarefas = mongoose.model('Tarefas', TarefasSchema);
 module.exports = Tarefas;
 ```
 
-2º - Criar uma instância do banco de dados a partir do schema criado para as Alunas:
+2º - Criar uma instância do banco de dados a partir do schema criado para as Tarefas:
 
 ```
 const Tarefas = require('../models/tarefas');
@@ -235,7 +235,3 @@ Order de alteração/criação de rotas:
 ### 7º - tarefas/:id (delete)
 ### 7º - tarefas/ (delete)
 ### 8º - tarefas/:id (put)
-
-router.delete("/:id", controller.deleteTarefa);
-router.delete("/", controller.deleteTarefaConcluida);
-router.put("/:id", controller.putTarefa);
