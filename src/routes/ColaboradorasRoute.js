@@ -4,5 +4,6 @@ const controller = require('../controllers/colaboradorasController')
 
 router.post('/', controller.creat)
 router.get('/', controller.getAll)
+router.post('/login', controller.login)
 
 module.exports = router;

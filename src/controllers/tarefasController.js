@@ -1,5 +1,5 @@
 //apontamento do model que criamos para as Tarefas
-const { JsonWebTokenError } = require('jsonwebtoken');
+
 const tarefas = require('../models/tarefas');
 const SECRET = process.env.SECRET
 const jwt = require('jsonwebtoken')
@@ -9,16 +9,23 @@ const jwt = require('jsonwebtoken')
 const getAll = (req, res) => {
   console.log(req.url);
   const authHeader = req.get('authorization')
-  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
-const token = authHeader.split('')[1]
 
-  jwt.verify(token, SECRET, function(err){
-   if(err){return res.status(403).send('foi não visse? tem algo errado')}
-   return  tarefas.find(function(err, tarefa){
+  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
+
+  const token = authHeader.split('')[1]
+
+  jwt.verify(token, SECRET, function(erro){
+     
+    if(erro){
+     return res.status(403).send('foi não visse? tem algo errado')
+    }
+   
+  tarefas.find(function(err, tarefa){
     if(err) { 
       return res.status(500).send({ message: err.message })
     }
-  else {  return res.status(200).send(tarefa);}
+
+    return res.status(200).send(tarefa)
  
   })
  })

@@ -2,9 +2,13 @@
 const colaboradoras = require('../models/colaboradoras')
 const SECRET = process.env.SECRET
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken') 
 
-
+                                                                                                
 const creat = (req, res) => {
+
+const senhaComHash = bcrypt.hashSync(req.body.senha, 10)
+req.body.senha = senhaComHash
 
     let colaboradora = new colaboradoras(req.body)
 
@@ -25,7 +29,22 @@ const getAll = (req, res) => {
     })
 }
 
+const login = (req, res) => {
+    colaboradoras.findOne({ email: req.body.email }, function(err, colaboradora) {
+        if(!colaboradora){ return res.status(404).send(`não existe o email ${req.body.email} não fofinea`)}
+
+       const senhaValida = bcrypt.compareSync(req.body.senha, colaboradora.senha)
+
+       if(!senhaValida){
+           return res.status(403).send('esquecesse a senha?')
+       }
+       const token = jwt.sign({email: req.body.email}, SECRET)
+       res.status(200).send(token)
+    })
+}
+
 module.exports = {
     creat,
-    getAll
+    getAll,
+    login
 }
