@@ -1,28 +1,39 @@
 //apontamento do model que criamos para as Tarefas
+const { JsonWebTokenError } = require('jsonwebtoken');
 const tarefas = require('../models/tarefas');
 const SECRET = process.env.SECRET
+const jwt = require('jsonwebtoken')
+
+
 
 const getAll = (req, res) => {
   console.log(req.url);
   const authHeader = req.get('authorization')
-  tarefas.find(function(err, tarefas){
-    if(!autenticado) { 
-      return 'erroooou                                   '
+  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
+const token = authHeader.split('')[1]
+
+  jwt.verify(token, SECRET, function(err){
+   if(err){return res.status(403).send('foi não visse? tem algo errado')}
+   return  tarefas.find(function(err, tarefa){
+    if(err) { 
+      return res.status(500).send({ message: err.message })
     }
-    res.status(200).send(tarefas);
+  else {  return res.status(200).send(tarefa);}
+ 
   })
-};
+ })
+}
 
 const getById = (req, res) => {
   const id = req.params.id;
   //Find sempre retorna uma lista
   //FindOne retorna um unico documento
-  tarefas.find({ id }, function(err, tarefas){
+  tarefas.find({ id }, function(err, tarefa){
     if(err) { 
       res.status(500).send({ message: err.message })
     }
 
-    res.status(200).send(tarefas);
+    res.status(200).send(tarefa);
   })
 };
 
@@ -35,7 +46,7 @@ const postTarefa = (req, res) => {
     if(err) { 
       res.status(500).send({ message: err.message })
     }
-    res.status(201).send(tarefa.toJSON())
+    res.status(201).send('incluso')
   })
   
 };
