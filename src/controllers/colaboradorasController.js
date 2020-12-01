@@ -1,6 +1,8 @@
 
 const colaboradoras = require('../models/colaboradoras')
 const SECRET = process.env.SECRET
+const bcrypt = require('bcrypt')
+
 
 const creat = (req, res) => {
 
@@ -14,6 +16,16 @@ colaboradora.save(function(err){
 
 }
 
+
+const getAll = (req, res) => {
+    colaboradoras.find(function(err, colaboradora){
+        if(err){ return res.status(500).send('cadê todo mundo?')}
+
+        return res.status(200).send(colaboradora)
+    })
+}
+
 module.exports = {
-    creat
+    creat,
+    getAll
 }
