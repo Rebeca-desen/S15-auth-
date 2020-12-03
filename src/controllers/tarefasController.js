@@ -87,6 +87,20 @@ const postTarefa = (req, res) => {
 
 
 const deleteTarefa = (req, res) => {
+  const authHeader = req.get('authorization')
+
+  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
+
+  const token = authHeader.split(' ')[1]
+
+
+  jwt.verify(token, SECRET, function(erro){
+     
+    if(erro){
+      
+     return res.status(403).send('foi não visse? tem algo errado')
+    }
+  
   const id = req.params.id;
 
   //deleteMany remove mais de um registro
@@ -112,9 +126,25 @@ const deleteTarefa = (req, res) => {
       })
     }
   })
+})
 };
 
 const deleteTarefaConcluida = (req, res) => {
+  const authHeader = req.get('authorization')
+
+  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
+
+  const token = authHeader.split(' ')[1]
+
+
+  jwt.verify(token, SECRET, function(erro){
+     
+    if(erro){
+      
+     return res.status(403).send('foi não visse? tem algo errado')
+    }
+
+
   //Deleta quando concluido = true
   try {
     tarefas.deleteMany({ concluido: true }, function (err) {
@@ -126,6 +156,7 @@ const deleteTarefaConcluida = (req, res) => {
     console.log(err)
     return res.status(424).send({ message: err.message })
   }
+})
 }
 
 const putTarefa = (req, res) => {
