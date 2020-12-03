@@ -5,18 +5,17 @@ const SECRET = process.env.SECRET
 const jwt = require('jsonwebtoken')
 
 
-
 const getAll = (req, res) => {
-  console.log(req.url);
   const authHeader = req.get('authorization')
 
   if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
 
-  const token = authHeader.split('')[1]
-
+  const token = authHeader.split(' ')[1]
+   
   jwt.verify(token, SECRET, function(erro){
      
     if(erro){
+      
      return res.status(403).send('foi não visse? tem algo errado')
     }
    
@@ -32,6 +31,20 @@ const getAll = (req, res) => {
 }
 
 const getById = (req, res) => {
+  const authHeader = req.get('authorization')
+
+  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
+
+  const token = authHeader.split(' ')[1]
+   
+  jwt.verify(token, SECRET, function(erro){
+     
+    if(erro){
+      
+     return res.status(403).send('foi não visse? tem algo errado')
+    }
+   
+ 
   const id = req.params.id;
   //Find sempre retorna uma lista
   //FindOne retorna um unico documento
@@ -42,9 +55,23 @@ const getById = (req, res) => {
 
     res.status(200).send(tarefa);
   })
-};
-
+})
+}
 const postTarefa = (req, res) => {
+  const authHeader = req.get('authorization')
+
+  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
+
+  const token = authHeader.split(' ')[1]
+   
+  jwt.verify(token, SECRET, function(erro){
+     
+    if(erro){
+      
+     return res.status(403).send('foi não visse? tem algo errado')
+    }
+
+
   console.log(req.body)
   
   let tarefa = new tarefas(req.body)
@@ -55,8 +82,9 @@ const postTarefa = (req, res) => {
     }
     res.status(201).send('incluso')
   })
-  
-};
+})
+}
+
 
 const deleteTarefa = (req, res) => {
   const id = req.params.id;
@@ -130,4 +158,4 @@ module.exports = {
   deleteTarefa,
   deleteTarefaConcluida,
   putTarefa
-};
+}
