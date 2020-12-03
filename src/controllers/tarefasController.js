@@ -160,8 +160,22 @@ const deleteTarefaConcluida = (req, res) => {
 }
 
 const putTarefa = (req, res) => {
-  const id = req.params.id;
+  const authHeader = req.get('authorization')
 
+  if(!authHeader){ return res.status(401).send('cadê os heards anjo')}
+
+  const token = authHeader.split(' ')[1]
+
+
+  jwt.verify(token, SECRET, function(erro){
+     
+    if(erro){
+      
+     return res.status(403).send('foi não visse? tem algo errado')
+    }
+
+  const id = req.params.id;
+    console.log('id:' + id)
   tarefas.find({ id }, function(err, tarefa){
     if(tarefa.length> 0){
       //faz o update apenas para quem respeitar o id passado no parametro
@@ -169,17 +183,21 @@ const putTarefa = (req, res) => {
       //UpdateMany atualiza vários registros de uma unica vez
       //UpdateOne atualiza um único registro por vez
       
-      tarefas.updateMany({ id }, { $set : req.body }, function (err) {
+     tarefas.updateMany({ id }, { $set : req.body }, function (err) {
         if (err) {
           res.status(500).send({ message: err.message })
         }
+        console.log('o que ta pegando:' + req.body)
         res.status(200).send({ message: "Registro alterado com sucesso"})
       })
-    }else {
+    
+  }
+    else {
       res.status(200).send({ message: "Não há registros para serem atualizados com esse id"})
     }
+   
   })
-
+  })
 }
 
 module.exports = {
