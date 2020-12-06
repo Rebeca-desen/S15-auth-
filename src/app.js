@@ -24,7 +24,7 @@ db.once("open", function (){
 //rotas
 const index = require("./routes/index")
 const tarefas = require("./routes/tarefasRoute")
-const colaboradoras = require("./routes/colaboradorasRoute")
+const colaboradoras = require("./routes/ColaboradorasRoute")
 
 //configurar body parser
 app.use(bodyParser.json());
